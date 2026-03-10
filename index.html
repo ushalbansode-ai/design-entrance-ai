@@ -453,7 +453,22 @@ async function sendMessage(){
   try{
     const res = await fetch(GEMINI_URL,{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
+      headers:{
+        'Content-Type':'application/json',
+        'x-goog-api-key': GEMINI_API_KEY
+      },
+      mode:'cors',
+```
+
+**Step 4** — Scroll down → **Commit changes** → wait 1 minute
+
+---
+
+## If still not working — try this test:
+
+Open a **new tab** in Chrome and go to:
+```
+https://aistudio.google.com
       body:JSON.stringify({
         contents:[{parts:[{text:`You are an expert tutor for Indian design entrance exams (NID, NIFT, UCEED, CEED). Current exam: ${exam}. Always respond in ${LANGS[lang].label}. Be helpful and concise.\n\nUser: ${msg}`}]}],
         generationConfig:{maxOutputTokens:600,temperature:0.7}
