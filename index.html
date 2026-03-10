@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Design Entrance AI — NID · NIFT · UCEED · CEED</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;700&family=Noto+Sans+Tamil:wght@400;700&family=Noto+Sans+Telugu:wght@400;700&family=Noto+Sans+Kannada:wght@400;700&family=Noto+Sans+Malayalam:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{--c:#E8522A;--a:#FF8C5A}
+  body{font-family:Georgia,serif;background:#0C0C0C;color:#F2EDE4;min-height:100vh;font-size:14px}
+  ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:#222;border-radius:2px}
+  .bg-glow-1{position:fixed;top:-10%;right:-5%;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(232,82,42,0.12) 0%,transparent 70%);pointer-events:none;z-index:0;transition:background .6s}
+  .bg-glow-2{position:fixed;bottom:-10%;left:-5%;width:250px;height:250px;border-radius:50%;background:radial-gradient(circle,rgba(255,140,90,0.08) 0%,transparent 70%);pointer-events:none;z-index:0;transition:background .6s}
+  .wrap{position:relative;z-index:1;max-width:480px;margin:0 auto;padding:0 12px 80px}
+  header{padding:18px 0 14px;border-bottom:1px solid rgba(232,82,42,0.3);transition:border-color .5s}
+  .header-top{display:flex;justify-content:space-between;align-items:center}
+  .logo{display:flex;align-items:center;gap:10px}
+  .logo-icon{width:34px;height:34px;border-radius:8px;background:var(--c);display:flex;align-items:center;justify-content:center;font-size:16px;transition:background .5s;flex-shrink:0}
+  .logo-title{font-size:15px;font-weight:700;letter-spacing:1px;color:var(--c);transition:color .5s}
+  .logo-sub{font-size:9px;color:#444;letter-spacing:2px}
+  .lang-btn{display:flex;align-items:center;gap:5px;padding:5px 10px;background:#111;border:1px solid rgba(232,82,42,0.4);border-radius:20px;color:var(--a);cursor:pointer;font-size:11px;font-family:inherit;transition:all .3s}
+  .lang-menu{position:absolute;right:12px;top:70px;background:#141414;border:1px solid #222;border-radius:10px;z-index:100;min-width:140px;box-shadow:0 8px 24px rgba(0,0,0,.7);overflow:hidden;display:none}
+  .lang-menu.open{display:block}
+  .lang-item{display:block;width:100%;text-align:left;padding:9px 14px;background:transparent;border:none;color:#666;cursor:pointer;font-size:13px;border-left:3px solid transparent;transition:all .2s}
+  .lang-item.active{background:rgba(232,82,42,0.15);color:var(--a);border-left-color:var(--c)}
+  .exam-tabs{display:flex;gap:6px;margin-top:14px;flex-wrap:wrap}
+  .exam-btn{padding:5px 14px;border-radius:20px;border:1.5px solid #222;background:transparent;color:#444;cursor:pointer;font-size:12px;font-family:inherit;letter-spacing:1px;transition:all .3s;font-weight:400}
+  .exam-btn.active{font-weight:700}
+  .exam-desc{font-size:11px;color:var(--a);margin-top:6px;transition:color .5s}
+  .free-badge{display:inline-flex;align-items:center;gap:4px;margin-top:6px;padding:3px 9px;background:#0A1A0A;border:1px solid #1A3A1A;border-radius:12px}
+  .free-badge span{font-size:9px;color:#3A7A3A;letter-spacing:1px}
+  nav{display:flex;border-bottom:1px solid #1A1A1A;margin-top:14px;overflow-x:auto}
+  .nav-btn{padding:9px 12px;border:none;background:none;color:#333;cursor:pointer;font-size:11px;font-family:inherit;border-bottom:2px solid transparent;transition:all .3s;white-space:nowrap}
+  .nav-btn.active{color:var(--c);border-bottom-color:var(--c);font-weight:700}
+  .tab{display:none;padding:18px 0}
+  .tab.active{display:block}
+  .topic-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px}
+  .tag{padding:2px 9px;border-radius:12px;background:rgba(232,82,42,0.12);color:var(--a);font-size:10px}
+  .syllabus-card{border:1px solid #161616;border-left:3px solid var(--c);border-radius:8px;padding:14px 16px;background:#080808;margin-bottom:10px;cursor:pointer;transition:all .3s}
+  .syllabus-card:hover{background:#0F0F0F}
+  .card-header{display:flex;align-items:center;gap:8px;margin-bottom:0}
+  .card-num{background:var(--c);color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;transition:background .5s}
+  .card-title{font-size:13px;color:#EDE8DF}
+  .card-content{font-size:12px;color:#555;line-height:1.8;margin-top:8px;display:none}
+  .card-content.open{display:block}
+  .card-arrow{margin-left:auto;color:#444;font-size:10px;transition:transform .3s}
+  .card-arrow.open{transform:rotate(180deg)}
+  .theory-card{border:1px solid #161616;border-radius:10px;padding:16px;background:#080808;margin-bottom:10px;position:relative;overflow:hidden}
+  .theory-icon{font-size:22px;margin-bottom:6px;color:var(--a)}
+  .theory-title{font-size:13px;color:#EDE8DF;margin-bottom:6px}
+  .theory-content{font-size:11px;color:#555;line-height:1.9}
+  .theory-bg{position:absolute;top:-4px;right:-4px;font-size:44px;opacity:.04;color:var(--c);pointer-events:none}
+  .progress-bar-wrap{height:2px;background:#1A1A1A;border-radius:2px;margin-bottom:16px}
+  .progress-bar{height:100%;background:var(--c);border-radius:2px;transition:width .4s}
+  .quiz-meta{display:flex;justify-content:space-between;margin-bottom:10px}
+  .quiz-meta span{font-size:10px;letter-spacing:2px}
+  .quiz-q-text{font-size:14px;color:#EDE8DF;line-height:1.8;margin-bottom:14px}
+  .quiz-card{background:#080808;border:1px solid #161616;border-radius:10px;padding:18px}
+  .quiz-opt{display:block;width:100%;padding:10px 13px;border:1.5px solid #1A1A1A;border-radius:8px;background:#050505;color:#666;text-align:left;cursor:pointer;font-size:12px;font-family:inherit;margin-bottom:7px;transition:all .3s;line-height:1.5}
+  .quiz-opt:disabled{cursor:default}
+  .quiz-opt.correct{background:rgba(232,82,42,0.15);border-color:var(--c);color:var(--a)}
+  .quiz-opt.wrong{background:#1A0808;border-color:#5A2222;color:#995555}
+  .quiz-explain{margin-top:12px;padding:11px;background:#030303;border-radius:8px;border-left:3px solid var(--c);font-size:11px;color:#4A4A4A;line-height:1.9}
+  .quiz-explain strong{color:var(--a)}
+  .next-btn{margin-top:10px;padding:7px 18px;background:var(--c);color:#fff;border:none;border-radius:7px;cursor:pointer;font-size:11px;font-family:inherit;transition:background .3s}
+  .done-box{text-align:center;padding:40px 0}
+  .done-emoji{font-size:50px;margin-bottom:10px}
+  .done-title{font-size:20px;margin-bottom:6px}
+  .done-score{font-size:18px;margin-bottom:16px}
+  .done-msg{color:#444;margin-bottom:20px;font-size:13px}
+  .retry-btn{padding:10px 24px;background:var(--c);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-family:inherit}
+  .chat-box{height:360px;overflow-y:auto;border:1px solid #161616;border-radius:10px;padding:14px;background:#050505;display:flex;flex-direction:column;gap:10px;margin-bottom:10px}
+  .msg{display:flex}
+  .msg.user{justify-content:flex-end}
+  .msg-bubble{max-width:82%;padding:9px 13px;border-radius:14px;font-size:12px;line-height:1.9;white-space:pre-wrap}
+  .msg.ai .msg-bubble{background:#0F0F0F;border:1px solid #161616;color:#999;border-radius:14px 14px 14px 4px}
+  .msg.user .msg-bubble{background:var(--c);color:#fff;border-radius:14px 14px 4px 14px}
+  .typing{color:var(--a);font-size:11px}
+  .chat-input-row{display:flex;gap:7px}
+  .chat-input{flex:1;padding:11px 13px;background:#080808;border:1px solid #1A1A1A;border-radius:9px;color:#EDE8DF;font-size:12px;font-family:inherit;outline:none}
+  .chat-input::placeholder{color:#252525}
+  .send-btn{padding:11px 16px;background:var(--c);color:#fff;border:none;border-radius:9px;cursor:pointer;font-size:14px;transition:background .3s}
+  .send-btn:disabled{opacity:.5;cursor:not-allowed}
+  .quick-prompts{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap}
+  .qp-btn{padding:3px 9px;border:1px solid #1A1A1A;border-radius:12px;background:none;color:#333;cursor:pointer;font-size:9px;font-family:inherit}
+  footer{position:fixed;bottom:0;left:0;right:0;padding:8px;background:#060606;border-top:1px solid #131313;text-align:center;font-size:9px;color:#222;letter-spacing:2px;z-index:10}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+  .blink{animation:blink 1s infinite}
+  button:active{opacity:.8}
+  .section-head{font-size:10px;letter-spacing:3px;color:#3A3A3A;text-transform:uppercase;margin-bottom:14px}
+</style>
+</head>
+<body>
+
+<div class="bg-glow-1" id="glow1"></div>
+<div class="bg-glow-2" id="glow2"></div>
+
+<div class="wrap">
+  <header>
+    <div class="header-top">
+      <div class="logo">
+        <div class="logo-icon" id="logoIcon">🎨</div>
+        <div>
+          <div class="logo-title" id="logoTitle">DESIGN AI</div>
+          <div class="logo-sub">NID · NIFT · UCEED · CEED</div>
+        </div>
+      </div>
+      <button class="lang-btn" id="langBtn" onclick="toggleLang()">🌐 <span id="langLabel">English</span> ▾</button>
+    </div>
+    <div class="lang-menu" id="langMenu"></div>
+    <div class="exam-tabs" id="examTabs"></div>
+    <div class="exam-desc" id="examDesc"></div>
+    <div class="free-badge"><span>✅</span><span>Google Gemini — FREE AI</span></div>
+  </header>
+
+  <nav id="mainNav"></nav>
+
+  <!-- SYLLABUS TAB -->
+  <div class="tab active" id="tab-home">
+    <div class="section-head" id="syllabusHead">Exam Syllabus</div>
+    <div class="topic-tags" id="topicTags"></div>
+    <div id="syllabusCards"></div>
+  </div>
+
+  <!-- DESIGN THEORY TAB -->
+  <div class="tab" id="tab-design">
+    <div class="section-head" id="designHead">Design Theory</div>
+    <div id="theoryCards"></div>
+  </div>
+
+  <!-- GAT TAB -->
+  <div class="tab" id="tab-gat">
+    <div class="section-head" id="gatHead">GAT Practice</div>
+    <div id="gatContent"></div>
+  </div>
+
+  <!-- CHAT TAB -->
+  <div class="tab" id="tab-chat">
+    <div class="section-head" id="chatHead">AI Tutor</div>
+    <div class="chat-box" id="chatBox"></div>
+    <div class="chat-input-row">
+      <input class="chat-input" id="chatInput" type="text" placeholder="Ask about NID, NIFT, color theory..."/>
+      <button class="send-btn" id="sendBtn" onclick="sendMessage()">→</button>
+    </div>
+    <div class="quick-prompts" id="quickPrompts"></div>
+  </div>
+</div>
+
+<footer id="footerText">DESIGN ENTRANCE AI · NID · NIFT · UCEED · CEED</footer>
+
+<script>
+// ============================================================
+// PASTE YOUR GEMINI API KEY HERE
+// ============================================================
+const GEMINI_API_KEY = "AIzaSy_YOUR_KEY_HERE";
+// ============================================================
+
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+
+const LANGS = {
+  en:{label:"English",font:"Georgia,serif"},
+  hi:{label:"हिन्दी",font:"'Noto Sans Devanagari',serif"},
+  mr:{label:"मराठी",font:"'Noto Sans Devanagari',serif"},
+  ta:{label:"தமிழ்",font:"'Noto Sans Tamil',serif"},
+  te:{label:"తెలుగు",font:"'Noto Sans Telugu',serif"},
+  kn:{label:"ಕನ್ನಡ",font:"'Noto Sans Kannada',serif"},
+  ml:{label:"മലയാളം",font:"'Noto Sans Malayalam',serif"}
+};
+
+const UI = {
+  en:{tabs:["📋 Syllabus","◈ Theory","🧠 GAT","💬 AI Tutor"],syllabusHead:"Exam Syllabus",designHead:"Design Theory",gatHead:"GAT Practice",chatHead:"AI Tutor",placeholder:"Ask about NID, NIFT, color theory, GAT...",score:"Score",next:"Next →",results:"See Results",tryAgain:"Try Again",done:"Quiz Complete!",excellent:"Excellent! Well prepared.",good:"Good effort! Keep practicing.",keep:"Keep studying — you'll improve!",expl:"Explanation",thinking:"Thinking",prompts:["NID exam pattern?","Gestalt principles","Color theory basics","NIFT GAT syllabus?"]},
+  hi:{tabs:["📋 पाठ्यक्रम","◈ सिद्धांत","🧠 GAT","💬 AI ट्यूटर"],syllabusHead:"परीक्षा पाठ्यक्रम",designHead:"डिज़ाइन सिद्धांत",gatHead:"GAT अभ्यास",chatHead:"AI ट्यूटर",placeholder:"NID, NIFT, रंग सिद्धांत के बारे में पूछें...",score:"अंक",next:"अगला →",results:"परिणाम",tryAgain:"फिर कोशिश",done:"प्रश्नोत्तरी पूर्ण!",excellent:"उत्कृष्ट! तैयार हैं।",good:"अच्छा प्रयास! जारी रखें।",keep:"पढ़ाई जारी रखें!",expl:"व्याख्या",thinking:"सोच रहा हूँ",prompts:["NID परीक्षा?","गेस्टाल्ट सिद्धांत","रंग सिद्धांत","NIFT GAT?"]},
+  mr:{tabs:["📋 अभ्यासक्रम","◈ सिद्धांत","🧠 GAT","💬 AI शिक्षक"],syllabusHead:"परीक्षा अभ्यासक्रम",designHead:"डिझाइन सिद्धांत",gatHead:"GAT सराव",chatHead:"AI शिक्षक",placeholder:"NID, NIFT याबद्दल विचारा...",score:"गुण",next:"पुढे →",results:"निकाल",tryAgain:"पुन्हा",done:"प्रश्नमंजुषा पूर्ण!",excellent:"उत्कृष्ट!",good:"चांगला प्रयत्न!",keep:"अभ्यास सुरू ठेवा!",expl:"स्पष्टीकरण",thinking:"विचार करतोय",prompts:["NID परीक्षा?","गेस्टाल्ट","रंग सिद्धांत","NIFT GAT?"]},
+  ta:{tabs:["📋 பாடம்","◈ கோட்பாடு","🧠 GAT","💬 AI ஆசிரியர்"],syllabusHead:"தேர்வு பாடத்திட்டம்",designHead:"டிசைன் கோட்பாடு",gatHead:"GAT பயிற்சி",chatHead:"AI ஆசிரியர்",placeholder:"NID, NIFT பற்றி கேளுங்கள்...",score:"மதிப்பெண்",next:"அடுத்து →",results:"முடிவுகள்",tryAgain:"மீண்டும்",done:"வினாடி வினா முடிந்தது!",excellent:"சிறப்பு!",good:"நல்ல முயற்சி!",keep:"படிப்பை தொடருங்கள்!",expl:"விளக்கம்",thinking:"யோசிக்கிறேன்",prompts:["NID தேர்வு?","கெஸ்டால்ட்","வண்ண கோட்பாடு","NIFT GAT?"]},
+  te:{tabs:["📋 పాఠ్యం","◈ సిద్ధాంతం","🧠 GAT","💬 AI గురువు"],syllabusHead:"పరీక్ష పాఠ్యక్రమం",designHead:"డిజైన్ సిద్ధాంతం",gatHead:"GAT సాధన",chatHead:"AI గురువు",placeholder:"NID, NIFT గురించి అడగండి...",score:"స్కోరు",next:"తదుపరి →",results:"ఫలితాలు",tryAgain:"మళ్ళీ",done:"క్విజ్ పూర్తి!",excellent:"అద్భుతం!",good:"మంచి ప్రయత్నం!",keep:"చదువు కొనసాగించండి!",expl:"వివరణ",thinking:"ఆలోచిస్తున్నాను",prompts:["NID పరీక్ష?","గెస్టాల్ట్","రంగు సిద్ధాంతం","NIFT GAT?"]},
+  kn:{tabs:["📋 ಪಠ್ಯ","◈ ಸಿದ್ಧಾಂತ","🧠 GAT","💬 AI ಶಿಕ್ಷಕ"],syllabusHead:"ಪರೀಕ್ಷೆ ಪಠ್ಯಕ್ರಮ",designHead:"ಡಿಸೈನ್ ಸಿದ್ಧಾಂತ",gatHead:"GAT ಅಭ್ಯಾಸ",chatHead:"AI ಶಿಕ್ಷಕ",placeholder:"NID, NIFT ಬಗ್ಗೆ ಕೇಳಿ...",score:"ಅಂಕ",next:"ಮುಂದೆ →",results:"ಫಲಿತಾಂಶ",tryAgain:"ಮತ್ತೆ",done:"ಕ್ವಿಜ್ ಪೂರ್ಣ!",excellent:"ಅದ್ಭುತ!",good:"ಒಳ್ಳೆಯ ಪ್ರಯತ್ನ!",keep:"ಓದು ಮುಂದುವರಿಸಿ!",expl:"ವಿವರಣೆ",thinking:"ಯೋಚಿಸುತ್ತಿದ್ದೇನೆ",prompts:["NID ಪರೀಕ್ಷೆ?","ಗೆಸ್ಟಾಲ್ಟ್","ಬಣ್ಣ ಸಿದ್ಧಾಂತ","NIFT GAT?"]},
+  ml:{tabs:["📋 പാഠ്യം","◈ സിദ്ധാന്തം","🧠 GAT","💬 AI ട്യൂട്ടർ"],syllabusHead:"പരീക്ഷ പാഠ്യക്രമം",designHead:"ഡിസൈൻ സിദ്ധാന്തം",gatHead:"GAT പരിശീലനം",chatHead:"AI ട്യൂട്ടർ",placeholder:"NID, NIFT പറ്റി ചോദിക്കൂ...",score:"സ്കോർ",next:"അടുത്തത് →",results:"ഫലങ്ങൾ",tryAgain:"വീണ്ടും",done:"ക്വിസ് പൂർത്തി!",excellent:"മികച്ചത്!",good:"നല്ല ശ്രമം!",keep:"പഠനം തുടരൂ!",expl:"വിശദീകരണം",thinking:"ചിന്തിക്കുന്നു",prompts:["NID പരീക്ഷ?","ഗെസ്റ്റാൾട്ട്","വർണ്ണ സിദ്ധാന്തം","NIFT GAT?"]}
+};
+
+const EXAMS = {
+  NID:{color:"#E8522A",accent:"#FF8C5A",
+    desc:{en:"National Institute of Design",hi:"राष्ट्रीय डिज़ाइन संस्थान",mr:"राष्ट्रीय डिझाइन संस्था",ta:"தேசிய வடிவமைப்பு நிறுவனம்",te:"జాతీయ డిజైన్ సంస్థ",kn:"ರಾಷ್ಟ್ರೀಯ ವಿನ್ಯಾಸ ಸಂಸ್ಥೆ",ml:"ദേശീയ ഡിസൈൻ ഇൻസ്റ്റിറ്റ്യൂട്ട്"},
+    topics:["Design Aptitude","Visualization","Creativity","Materials","Color Theory"],
+    syllabus:[
+      {title:{en:"Design Aptitude & Creativity",hi:"डिज़ाइन योग्यता और रचनात्मकता",mr:"डिझाइन क्षमता",ta:"வடிவமைப்பு திறன்",te:"డిజైన్ ఆప్టిట్యూడ్",kn:"ಡಿಸೈನ್ ಅಪ್ಟಿಟ್ಯೂಡ್",ml:"ഡിസൈൻ ആപ്റ്റിറ്റ്യൂഡ്"},content:{en:"Tests spatial reasoning, visual memory and creative thinking. Includes drawing from imagination and 3D visualization tasks.",hi:"स्थानिक तर्क, दृश्य स्मृति और रचनात्मक सोच का परीक्षण। कल्पना से चित्रांकन शामिल है।",mr:"स्थानिक तर्क, दृश्य स्मृती आणि सर्जनशील विचार. कल्पनेतून चित्रकाम.",ta:"இடஞ்சார்ந்த சிந்தனை, காட்சி நினைவகம் மற்றும் படைப்பாற்றல் சிந்தனை.",te:"స్థానిక తార్కికం, దృశ్య స్మృతి మరియు సృజనాత్మక ఆలోచన.",kn:"ಪ್ರಾದೇಶಿಕ ತರ್ಕ, ದೃಶ್ಯ ಸ್ಮರಣೆ ಮತ್ತು ಸೃಜನಶೀಲ ಚಿಂತನೆ.",ml:"സ്ഥലീയ ചിന്ത, ദൃശ്യ ഓർമ്മ, സർഗ്ഗാത്മക ചിന്ത."}},
+      {title:{en:"Observation & Memory",hi:"अवलोकन और स्मृति",mr:"निरीक्षण आणि स्मृती",ta:"கவனிப்பு & நினைவகம்",te:"పరిశీలన & జ్ఞాపకశక్తి",kn:"ಅವಲೋಕನ & ಸ್ಮರಣೆ",ml:"നിരീക്ഷണം & ഓർമ്മ"},content:{en:"Observe objects and scenes then reproduce from memory. Tests attention to detail and visual recall ability.",hi:"वस्तुओं को देखें और स्मृति से पुनः बनाएं।",mr:"वस्तू पाहा आणि स्मृतीतून पुन्हा तयार करा.",ta:"பொருட்களை கவனித்து நினைவிலிருந்து உருவாக்குங்கள்.",te:"వస్తువులను పరిశీలించి జ్ఞాపకం నుండి పునరుత్పత్తి.",kn:"ವಸ್ತುಗಳನ್ನು ಗಮನಿಸಿ ಸ್ಮರಣೆಯಿಂದ ಮರುಸೃಷ್ಟಿಸಿ.",ml:"വസ്തുക്കൾ നിരീക്ഷിച്ച് ഓർമ്മയിൽ നിന്ന് പുനഃനിർമ്മിക്കുക."}},
+      {title:{en:"Material & Product Knowledge",hi:"सामग्री और उत्पाद ज्ञान",mr:"साहित्य आणि उत्पाद ज्ञान",ta:"பொருள் & தயாரிப்பு அறிவு",te:"మెటీరియల్ & ఉత్పత్తి జ్ఞానం",kn:"ಸಾಮಗ್ರಿ & ಉತ್ಪನ್ನ ಜ್ಞಾನ",ml:"മെറ്റീരിയൽ & ഉൽപ്പന്ന അറിവ്"},content:{en:"Understanding of everyday materials, manufacturing processes and product design principles used in industry.",hi:"रोजमर्रा की सामग्री, निर्माण प्रक्रियाओं और उत्पाद डिज़ाइन की समझ।",mr:"दैनंदिन साहित्य, उत्पादन प्रक्रिया आणि उत्पाद डिझाइन तत्त्वे.",ta:"அன்றாட பொருட்கள், உற்பத்தி செயல்முறைகள் மற்றும் வடிவமைப்பு கோட்பாடுகள்.",te:"రోజువారీ పదార్థాలు, తయారీ ప్రక్రియలు మరియు ఉత్పత్తి డిజైన్.",kn:"ದೈನಂದಿನ ಸಾಮಗ್ರಿಗಳು, ತಯಾರಿಕಾ ಪ್ರಕ್ರಿಯೆಗಳು.",ml:"ദൈനംദിന വസ്തുക്കൾ, നിർമ്മാണ പ്രക്രിയകൾ, ഉൽപ്പന്ന ഡിസൈൻ."}},
+      {title:{en:"Design History & GK",hi:"डिज़ाइन इतिहास",mr:"डिझाइन इतिहास",ta:"வடிவமைப்பு வரலாறு",te:"డిజైన్ చరిత్ర",kn:"ವಿನ್ಯಾಸ ಇತಿಹಾಸ",ml:"ഡിസൈൻ ചരിത്രം"},content:{en:"History of design, famous designers, movements like Bauhaus, Art Deco, Modernism and contemporary trends.",hi:"डिज़ाइन का इतिहास, प्रसिद्ध डिज़ाइनर, बौहाउस और समकालीन रुझान।",mr:"डिझाइनचा इतिहास, प्रसिद्ध डिझायनर आणि समकालीन ट्रेंड.",ta:"வடிவமைப்பின் வரலாறு, பிரபல வடிவமைப்பாளர்கள், பாஹாஸ்.",te:"డిజైన్ చరిత్ర, ప్రసిద్ధ డిజైనర్లు, బాఉహాస్.",kn:"ವಿನ್ಯಾಸದ ಇತಿಹಾಸ, ಪ್ರಸಿದ್ಧ ವಿನ್ಯಾಸಕರು.",ml:"ഡിസൈൻ ചരിത്രം, പ്രശസ്ത ഡിസൈനർമാർ."}}
+    ]},
+  NIFT:{color:"#6B3FA0",accent:"#A076D4",
+    desc:{en:"National Institute of Fashion Technology",hi:"राष्ट्रीय फैशन प्रौद्योगिकी संस्थान",mr:"राष्ट्रीय फॅशन तंत्रज्ञान संस्था",ta:"தேசிய ஃபேஷன் தொழில்நுட்ப நிறுவனம்",te:"జాతీయ ఫ్యాషన్ టెక్నాలజీ సంస్థ",kn:"ರಾಷ್ಟ್ರೀಯ ಫ್ಯಾಷನ್ ತಂತ್ರಜ್ಞಾನ ಸಂಸ್ಥೆ",ml:"ദേശീയ ഫാഷൻ ടെക്നോളജി ഇൻസ്റ്റിറ്റ്യൂട്ട്"},
+    topics:["Creative Ability","General Ability","Fashion Knowledge","Textiles","Situation Test"],
+    syllabus:[
+      {title:{en:"Creative Ability Test (CAT)",hi:"रचनात्मक योग्यता परीक्षा",mr:"सर्जनशील क्षमता चाचणी",ta:"படைப்பாற்றல் திறன் சோதனை",te:"క్రియేటివ్ ఎబిలిటీ టెస్ట్",kn:"ಸೃಜನಶೀಲ ಸಾಮರ್ಥ್ಯ ಪರೀಕ್ಷೆ",ml:"ക്രിയേറ്റീവ് ആബിലിറ്റി ടെസ്റ്റ്"},content:{en:"Evaluates creativity through color, composition and drawing tasks. Tests originality and aesthetic quality.",hi:"रंग, संरचना और चित्रकारी के माध्यम से रचनात्मकता का मूल्यांकन।",mr:"रंग, रचना आणि चित्रकाम द्वारे सर्जनशीलतेचे मूल्यांकन.",ta:"வண்ணம், அமைப்பு மற்றும் வரைதல் மூலம் படைப்பாற்றல் மதிப்பீடு.",te:"రంగు, కూర్పు మరియు డ్రాయింగ్ ద్వారా సృజనాత్మకత మూల్యాంకనం.",kn:"ಬಣ್ಣ, ರಚನೆ ಮತ್ತು ರೇಖಾಚಿತ್ರ ಕಾರ್ಯಗಳ ಮೂಲಕ ಸೃಜನಶೀಲತೆ ಮೌಲ್ಯಮಾಪನ.",ml:"വർണ്ണം, കോമ്പോസിഷൻ, ഡ്രോയിംഗ് ടാസ്ക്കുകൾ വഴി സർഗ്ഗാത്മകത."}},
+      {title:{en:"General Ability Test (GAT)",hi:"सामान्य योग्यता परीक्षा",mr:"सामान्य क्षमता चाचणी",ta:"பொது திறன் சோதனை",te:"జనరల్ ఎబిలిటీ టెస్ట్",kn:"ಸಾಮಾನ್ಯ ಸಾಮರ್ಥ್ಯ ಪರೀಕ್ಷೆ",ml:"ജനറൽ ആബിലിറ്റി ടെസ്റ്റ്"},content:{en:"Quantitative ability, English comprehension, analytical ability, communication skills and general knowledge.",hi:"मात्रात्मक योग्यता, अंग्रेजी बोध, विश्लेषणात्मक क्षमता और सामान्य ज्ञान।",mr:"परिमाणात्मक क्षमता, इंग्रजी आकलन, विश्लेषणात्मक क्षमता आणि सामान्य ज्ञान.",ta:"அளவீட்டு திறன், ஆங்கில புரிதல், பகுப்பாய்வு திறன்.",te:"పరిమాణాత్మక సామర్థ్యం, ఇంగ్లీష్ అవగాహన, విశ్లేషణాత్మక సామర్థ్యం.",kn:"ಪರಿಮಾಣಾತ್ಮಕ ಸಾಮರ್ಥ್ಯ, ಇಂಗ್ಲಿಷ್ ಗ್ರಹಣ.",ml:"ക്വാണ്ടിറ്റേറ്റീവ് ആബിലിറ്റി, ഇംഗ്ലീഷ് ഗ്രാഹ്യം."}},
+      {title:{en:"Fashion & Textile Awareness",hi:"फैशन और वस्त्र जागरूकता",mr:"फॅशन आणि वस्त्र जागरूकता",ta:"நாகரீக & துணி விழிப்புணர்வு",te:"ఫ్యాషన్ & టెక్స్టైల్ అవగాహన",kn:"ಫ್ಯಾಷನ್ & ಜವಳಿ ಅರಿವು",ml:"ഫാഷൻ & ടെക്സ്റ്റൈൽ അവബോധം"},content:{en:"Fashion history, Indian textiles including Banarasi, Kanjivaram, Chanderi, embroideries and contemporary trends.",hi:"फैशन इतिहास, भारतीय वस्त्र और समकालीन फैशन।",mr:"फॅशन इतिहास, भारतीय वस्त्र आणि समकालीन ट्रेंड.",ta:"ஃபேஷன் வரலாறு, இந்திய துணிகள் மற்றும் தற்கால போக்குகள்.",te:"ఫ్యాషన్ చరిత్ర, భారతీయ వస్త్రాలు మరియు సమకాలీన ట్రెండ్‌లు.",kn:"ಫ್ಯಾಷನ್ ಇತಿಹಾಸ, ಭಾರತೀಯ ಜವಳಿ ಮತ್ತು ಸಮಕಾಲೀನ ಟ್ರೆಂಡ್‌ಗಳು.",ml:"ഫാഷൻ ചരിത്രം, ഇന്ത്യൻ തുണിത്തരങ്ങൾ, സമകാലിക ട്രെൻഡുകൾ."}},
+      {title:{en:"Situation Test",hi:"स्थिति परीक्षण",mr:"परिस्थिती चाचणी",ta:"சூழ்நிலை சோதனை",te:"సిచ్యుయేషన్ టెస్ట్",kn:"ಸಂದರ್ಭ ಪರೀಕ್ಷೆ",ml:"സിറ്റ്വേഷൻ ടെസ്റ്റ്"},content:{en:"Practical test: create 3D models using given materials to demonstrate spatial and creative ability.",hi:"व्यावहारिक परीक्षा: दी गई सामग्रियों से 3D मॉडल बनाएं।",mr:"व्यावहारिक चाचणी: दिलेल्या साहित्यातून 3D मॉडेल तयार करा.",ta:"நடைமுறை சோதனை: கொடுக்கப்பட்ட பொருட்களைக் கொண்டு 3D மாதிரிகளை உருவாக்குக.",te:"ఆచరణాత్మక పరీక్ష: ఇచ్చిన పదార్థాలతో 3D నమూనాలు తయారు చేయండి.",kn:"ಪ್ರಾಯೋಗಿಕ ಪರೀಕ್ಷೆ: ನೀಡಿದ ಸಾಮಗ್ರಿಗಳನ್ನು ಬಳಸಿ 3D ಮಾದರಿಗಳನ್ನು ರಚಿಸಿ.",ml:"പ്രായോഗിക പരീക്ഷ: നൽകിയ മെറ്റീരിയൽ ഉപയോഗിച്ച് 3D മോഡലുകൾ ഉണ്ടാക്കുക."}}
+    ]},
+  UCEED:{color:"#1A6B4A",accent:"#3DB87A",
+    desc:{en:"Undergraduate Common Entrance Exam for Design",hi:"स्नातक सामान्य प्रवेश परीक्षा",mr:"पदवीपूर्व सामान्य प्रवेश परीक्षा",ta:"இளநிலை பொது நுழைவுத் தேர்வு",te:"అండర్ గ్రాడ్యుయేట్ ఎంట్రెన్స్",kn:"ಪದವಿಪೂರ್ವ ಸಾಮಾನ್ಯ ಪ್ರವೇಶ ಪರೀಕ್ಷೆ",ml:"അണ്ടർ ഗ്രാഡ്യുവേറ്റ് എൻട്രൻസ്"},
+    topics:["Visualization","Observation","Design Thinking","Environment","Reasoning"],
+    syllabus:[
+      {title:{en:"Visualization & Spatial Ability",hi:"विज़ुअलाइज़ेशन और स्थानिक क्षमता",mr:"व्हिज्युअलायझेशन आणि स्थानिक क्षमता",ta:"காட்சிப்படுத்தல் & இட திறன்",te:"విజువలైజేషన్ & స్పేషియల్ ఎబిలిటీ",kn:"ದೃಶ್ಯೀಕರಣ & ಪ್ರಾದೇಶಿಕ ಸಾಮರ್ಥ್ಯ",ml:"വിഷ്വലൈസേഷൻ & സ്ഥലീയ ശേഷി"},content:{en:"Mentally rotate and manipulate 3D objects, understand spatial relationships and visualize cross-sections.",hi:"3D वस्तुओं को मानसिक रूप से घुमाना, स्थानिक संबंधों की समझ।",mr:"3D वस्तूंना मानसिकरीत्या फिरवणे, स्थानिक संबंधांची समज.",ta:"3D பொருட்களை மனதளவில் சுழற்றி கையாளுதல்.",te:"3D వస్తువులను మానసికంగా తిప్పడం మరియు స్థలీయ సంబంధాలు.",kn:"3D ವಸ್ತುಗಳನ್ನು ಮಾನಸಿಕವಾಗಿ ತಿರುಗಿಸುವ ಸಾಮರ್ಥ್ಯ.",ml:"3D വസ്തുക്കൾ മാനസികമായി കറക്കുന്നതും സ്ഥലീയ ബന്ധങ്ങൾ."}},
+      {title:{en:"Observation & Design Sensitivity",hi:"अवलोकन और डिज़ाइन संवेदनशीलता",mr:"निरीक्षण आणि डिझाइन संवेदनशीलता",ta:"கவனிப்பு & வடிவமைப்பு உணர்திறன்",te:"పరిశీలన & డిజైన్ సెన్సిటివిటీ",kn:"ಅವಲೋಕನ & ವಿನ್ಯಾಸ ಸಂವೇದನಶೀಲತೆ",ml:"നിരീക്ഷണം & ഡിസൈൻ സെൻസിറ്റിവിറ്റി"},content:{en:"Eye for detail, aesthetic sensitivity and ability to identify design flaws and improvements in everyday objects.",hi:"विवरण के लिए नजर, सौंदर्य संवेदनशीलता और डिज़ाइन दोषों की पहचान।",mr:"तपशीलासाठी नजर, सौंदर्य संवेदनशीलता आणि डिझाइन त्रुटी ओळख.",ta:"விவரங்களுக்கான கண், அழகியல் உணர்திறன்.",te:"వివరాల కోసం కన్ను, సౌందర్య సున్నితత్వం.",kn:"ವಿವರಗಳಿಗೆ ಕಣ್ಣು, ಸೌಂದರ್ಯ ಸಂವೇದನಶೀಲತೆ.",ml:"വിവരങ്ങൾക്കുള്ള കണ്ണ്, സൗന്ദര്യബോധം."}},
+      {title:{en:"Environmental & Social Awareness",hi:"पर्यावरण और सामाजिक जागरूकता",mr:"पर्यावरण आणि सामाजिक जागरूकता",ta:"சுற்றுச்சூழல் & சமூக விழிப்புணர்வு",te:"పర్యావరణ & సామాజిక అవగాహన",kn:"ಪರಿಸರ & ಸಾಮಾಜಿಕ ಅರಿವು",ml:"പരിസ്ഥിതി & സാമൂഹ്യ അവബോധം"},content:{en:"Natural world, sustainability, social issues and how design intersects with society and environment.",hi:"प्राकृतिक दुनिया, स्थिरता, सामाजिक मुद्दे और डिज़ाइन का समाज से संबंध।",mr:"नैसर्गिक जग, टिकाऊपणा, सामाजिक मुद्दे.",ta:"இயற்கை உலகம், நிலையான வளர்ச்சி, சமூக பிரச்சினைகள்.",te:"సహజ ప్రపంచం, సస్టైనబిలిటీ, సామాజిక సమస్యలు.",kn:"ನೈಸರ್ಗಿಕ ಜಗತ್ತು, ಸಮರ್ಥನೀಯತೆ.",ml:"പ്രകൃതി ലോകം, സ്ഥിരത, സാമൂഹ്യ പ്രശ്നങ്ങൾ."}},
+      {title:{en:"Analytical & Logical Reasoning",hi:"विश्लेषणात्मक और तार्किक तर्क",mr:"विश्लेषणात्मक आणि तार्किक तर्क",ta:"பகுப்பாய்வு & தர்க்க சிந்தனை",te:"విశ్లేషణాత్మక & తార్కిక రీజనింగ్",kn:"ವಿಶ್ಲೇಷಣಾ & ತಾರ್ಕಿಕ ತರ್ಕ",ml:"വിശകലന & ലോജിക്കൽ റീസണിംഗ്"},content:{en:"Visual patterns, sequences, analogies and logical deduction tasks for design problem solving.",hi:"दृश्य पैटर्न, अनुक्रम, सादृश्य और तार्किक कटौती।",mr:"दृश्य नमुने, क्रम, साधर्म्य आणि तार्किक वजावट.",ta:"காட்சி வடிவங்கள், வரிசைகள், ஒப்புமைகள்.",te:"దృశ్య నమూనాలు, క్రమాలు, సారూప్యతలు.",kn:"ದೃಶ್ಯ ಮಾದರಿಗಳು, ಅನುಕ್ರಮಗಳು, ಸಾದೃಶ್ಯಗಳು.",ml:"ദൃശ്യ പാറ്റേണുകൾ, ശ്രേണികൾ, സാദൃശ്യങ്ങൾ."}}
+    ]},
+  CEED:{color:"#B5860D",accent:"#F0B429",
+    desc:{en:"Common Entrance Exam for Design (PG)",hi:"सामान्य प्रवेश परीक्षा (PG)",mr:"सामान्य प्रवेश परीक्षा (PG)",ta:"பொது நுழைவுத் தேர்வு (PG)",te:"కామన్ ఎంట్రెన్స్ ఎగ్జామ్ (PG)",kn:"ಸಾಮಾನ್ಯ ಪ್ರವೇಶ ಪರೀಕ್ಷೆ (PG)",ml:"കോമൺ എൻട്രൻസ് (PG)"},
+    topics:["Spatial Ability","Environmental Awareness","Reasoning","Language","Sketching"],
+    syllabus:[
+      {title:{en:"Part A: Objective Questions",hi:"भाग A: वस्तुनिष्ठ प्रश्न",mr:"भाग A: वस्तुनिष्ठ प्रश्न",ta:"பகுதி A: குறிக்கோள் கேள்விகள்",te:"పార్ట్ A: ఆబ్జెక్టివ్ ప్రశ్నలు",kn:"ಭಾಗ A: ವಸ್ತುನಿಷ್ಠ ಪ್ರಶ್ನೆಗಳು",ml:"ഭാഗം A: ഒബ്ജക്ടീവ് ചോദ്യങ്ങൾ"},content:{en:"Computer-based test: visualization, environmental awareness, analytical reasoning, language and design awareness.",hi:"कंप्यूटर-आधारित परीक्षा: विज़ुअलाइज़ेशन, पर्यावरण, विश्लेषणात्मक तर्क, भाषा।",mr:"संगणक-आधारित चाचणी: व्हिज्युअलायझेशन, पर्यावरण, विश्लेषणात्मक तर्क.",ta:"கணினி சோதனை: காட்சிப்படுத்தல், சுற்றுச்சூழல் விழிப்புணர்வு.",te:"కంప్యూటర్-ఆధారిత పరీక్ష: విజువలైజేషన్, పర్యావరణ అవగాహన.",kn:"ಕಂಪ್ಯೂಟರ್-ಆಧಾರಿತ ಪರೀಕ್ಷೆ: ದೃಶ್ಯೀಕರಣ, ಪರಿಸರ ಅರಿವು.",ml:"കംപ്യൂട്ടർ ടെസ്റ്റ്: വിഷ്വലൈസേഷൻ, പരിസ്ഥിതി അവബോധം."}},
+      {title:{en:"Part B: Subjective Drawing",hi:"भाग B: हाथ से चित्रांकन",mr:"भाग B: हाताने चित्रकाम",ta:"பகுதி B: கையால் வரைதல்",te:"పార్ట్ B: హ్యాండ్ డ్రాయింగ్",kn:"ಭಾಗ B: ಕೈ ರೇಖಾಚಿತ್ರ",ml:"ഭാഗം B: ഹാൻഡ് ഡ്രോയിംഗ്"},content:{en:"Hand-drawn: sketching, ideation, product redesign, narrative illustration. Evaluated on creativity and craftsmanship.",hi:"हाथ से: रेखाचित्र, विचार-मंथन, उत्पाद पुनःडिज़ाइन और चित्रण।",mr:"हाताने: स्केचिंग, कल्पनाशक्ती, उत्पाद पुनर्डिझाइन.",ta:"கையால்: வரைதல், யோசனை, தயாரிப்பு மறுவடிவமைப்பு.",te:"చేతితో: స్కెచింగ్, ఆలోచన, ఉత్పత్తి రీడిజైన్.",kn:"ಕೈಯಿಂದ: ರೇಖಾಚಿತ್ರ, ಐಡಿಯೇಶನ್.",ml:"കൈ: സ്കെച്ചിംഗ്, ഐഡിയേഷൻ, ഉൽപ്പന്ന റീഡിസൈൻ."}},
+      {title:{en:"Design Awareness & History",hi:"डिज़ाइन जागरूकता और इतिहास",mr:"डिझाइन जागरूकता आणि इतिहास",ta:"வடிவமைப்பு விழிப்புணர்வு & வரலாறு",te:"డిజైన్ అవగాహన & చరిత్ర",kn:"ವಿನ್ಯಾಸ ಅರಿವು & ಇತಿಹಾಸ",ml:"ഡിസൈൻ അവബോധം & ചരിത്രം"},content:{en:"Notable designers, design movements, iconic products, architecture and global design thinking evolution.",hi:"उल्लेखनीय डिज़ाइनर, डिज़ाइन आंदोलन और वैश्विक डिज़ाइन सोच।",mr:"उल्लेखनीय डिझायनर, डिझाइन चळवळी, प्रतिष्ठित उत्पादने.",ta:"குறிப்பிடத்தக்க வடிவமைப்பாளர்கள், வடிவமைப்பு இயக்கங்கள்.",te:"గుర్తించదగిన డిజైనర్లు, డిజైన్ ఉద్యమాలు.",kn:"ಗಮನಾರ್ಹ ವಿನ್ಯಾಸಕರು, ವಿನ್ಯಾಸ ಚಳುವಳಿಗಳು.",ml:"പ്രശസ്ത ഡിസൈനർമാർ, ഡിസൈൻ ചലനങ്ങൾ."}}
+    ]}
+};
+
+const THEORY = [
+  {icon:"◈",title:{en:"Elements of Design",hi:"डिज़ाइन के तत्व",mr:"डिझाइनचे घटक",ta:"வடிவமைப்பின் கூறுகள்",te:"డిజైన్ అంశాలు",kn:"ವಿನ್ಯಾಸದ ಅಂಶಗಳು",ml:"ഡിസൈൻ ഘടകങ്ങൾ"},content:{en:"7 core elements: Line, Shape, Form, Space, Texture, Color, Value. Every visual composition is built from these fundamental blocks.",hi:"7 मूल तत्व: रेखा, आकार, रूप, स्थान, बनावट, रंग, मूल्य।",mr:"7 मूळ घटक: रेषा, आकार, रूप, जागा, पोत, रंग, मूल्य.",ta:"7 கூறுகள்: கோடு, வடிவம், உரு, இடம், அமைப்பு, வண்ணம், மதிப்பு.",te:"7 అంశాలు: రేఖ, ఆకారం, రూపం, స్థలం, ఆకృతి, రంగు, విలువ.",kn:"7 ಅಂಶಗಳು: ರೇಖೆ, ಆಕಾರ, ರೂಪ, ಸ್ಥಳ, ವಿನ್ಯಾಸ, ಬಣ್ಣ, ಮೌಲ್ಯ.",ml:"7 ഘടകങ്ങൾ: വര, ആകൃതി, ഫോം, സ്ഥലം, ടെക്സ്ചർ, നിറം, മൂല്യം."}},
+  {icon:"⬡",title:{en:"Principles of Design",hi:"डिज़ाइन के सिद्धांत",mr:"डिझाइनची तत्त्वे",ta:"வடிவமைப்பின் கோட்பாடுகள்",te:"డిజైన్ సూత్రాలు",kn:"ವಿನ್ಯಾಸದ ತತ್ವಗಳು",ml:"ഡിസൈൻ തത്വങ്ങൾ"},content:{en:"Balance, Contrast, Emphasis, Movement, Pattern, Rhythm, Unity and Variety guide how elements are arranged for visual impact.",hi:"संतुलन, विपरीतता, जोर, गति, पैटर्न, लय, एकता, विविधता।",mr:"संतुलन, विरोधाभास, जोर, हालचाल, नमुना, लय, एकता, विविधता.",ta:"சமநிலை, முரண்பாடு, வலியுறுத்தல், இயக்கம், வடிவம், தாளம்.",te:"బ్యాలెన్స్, కాంట్రాస్ట్, ఎంఫాసిస్, మూవ్‌మెంట్, పాటర్న్, రిథమ్.",kn:"ಸಮತೋಲನ, ವ್ಯತಿರೇಕ, ಒತ್ತು, ಚಲನೆ, ಮಾದರಿ, ಲಯ.",ml:"ബാലൻസ്, കോൺട്രാസ്റ്റ്, ഊന്നൽ, ചലനം, പാറ്റേൺ, റിഥം."}},
+  {icon:"◉",title:{en:"Color Theory",hi:"रंग सिद्धांत",mr:"रंग सिद्धांत",ta:"வண்ண கோட்பாடு",te:"రంగు సిద్ధాంతం",kn:"ಬಣ್ಣ ಸಿದ್ಧಾಂತ",ml:"വർണ്ണ സിദ്ധാന്തം"},content:{en:"Primary (RYB), Secondary, Tertiary colors. Schemes: Monochromatic, Analogous, Complementary, Triadic. Warm colors advance, cool recede.",hi:"प्राथमिक, द्वितीयक, तृतीयक। एकरंगी, सादृश्य, पूरक, त्रिकोण।",mr:"प्राथमिक, द्वितीयक, तृतीयक रंग. एकरंगी, साधर्म्य, पूरक.",ta:"முதல்நிலை, இரண்டாம்நிலை, மூன்றாம்நிலை. ஒற்றை வண்ண, ஒத்த, நிரப்பு.",te:"ప్రాథమిక, ద్వితీయ, తృతీయ రంగులు. మోనోక్రోమాటిక్, అనాలజస్.",kn:"ಪ್ರಾಥಮಿಕ, ದ್ವಿತೀಯ, ತೃತೀಯ ಬಣ್ಣಗಳು. ಮೊನೊಕ್ರೊಮ್ಯಾಟಿಕ್.",ml:"പ്രാഥമിക, ദ്വിതീയ, തൃതീയ. മോണോക്രോമാറ്റിക്, അനലഗസ്, കോംപ്ലിമെന്ററി."}},
+  {icon:"Aa",title:{en:"Typography",hi:"टाइपोग्राफी",mr:"टायपोग्राफी",ta:"தட்டச்சு கலை",te:"టైపోగ్రఫీ",kn:"ಟೈಪೋಗ್ರಫಿ",ml:"ടൈപ്പോഗ്രഫി"},content:{en:"Serif, Sans-Serif, Script, Display, Monospace. Key terms: Baseline, X-height, Kerning, Leading, Tracking, Ascender, Descender.",hi:"सेरिफ, सैन्स-सेरिफ, स्क्रिप्ट। बेसलाइन, कर्निंग, लीडिंग।",mr:"सेरिफ, सॅन्स-सेरिफ, स्क्रिप्ट. बेसलाइन, कर्निंग.",ta:"சேரிஃப், சேன்ஸ்-சேரிஃப், ஸ்கிரிப்ட். அடிக்கோடு, கர்னிங்.",te:"సెరిఫ్, సాన్స్-సెరిఫ్, స్క్రిప్ట్. బేస్‌లైన్, కెర్నింగ్.",kn:"ಸೆರಿಫ್, ಸ್ಯಾನ್ಸ್-ಸೆರಿಫ್. ಬೇಸ್‌ಲೈನ್, ಕರ್ನಿಂಗ್.",ml:"സെരിഫ്, സാൻസ്-സെരിഫ്. ബേസ്‌ലൈൻ, കേർണിംഗ്."}},
+  {icon:"◷",title:{en:"Design History",hi:"डिज़ाइन इतिहास",mr:"डिझाइन इतिहास",ta:"வடிவமைப்பு வரலாறு",te:"డిజైన్ చరిత్ర",kn:"ವಿನ್ಯಾಸ ಇತಿಹಾಸ",ml:"ഡിസൈൻ ചരിത്രം"},content:{en:"Arts & Crafts → Art Nouveau → Bauhaus (1919) → Art Deco → Swiss Style → Pop Art (1960s) → Postmodernism → Digital (1990s+).",hi:"कला और शिल्प → आर्ट नोव्यू → बौहाउस → आर्ट डेको → स्विस → पॉप आर्ट → डिजिटल।",mr:"कला → आर्ट नोव्यू → बौहाउस → आर्ट डेको → स्विस → पॉप → डिजिटल.",ta:"கலை → ஆர்ட் நூவோ → பாஹாஸ் → ஆர்ட் டெக்கோ → சுவிஸ் → பாப் → டிஜிட்டல்.",te:"ఆర్ట్స్ → ఆర్ట్ నూవో → బాఉహాస్ → ఆర్ట్ డెకో → స్విస్ → పాప్ → డిజిటల్.",kn:"ಕಲೆ → ಆರ್ಟ್ ನೂವೊ → ಬೌಹಾಸ್ → ಆರ್ಟ್ ಡೆಕೋ → ಸ್ವಿಸ್ → ಪಾಪ್ → ಡಿಜಿಟಲ್.",ml:"ആർട്‌സ് → ആർട് നൂവോ → ബൗഹൗസ് → ആർട് ഡെക്കോ → സ്വിസ് → പോപ് → ഡിജിറ്റൽ."}},
+  {icon:"◌",title:{en:"Gestalt Principles",hi:"गेस्टाल्ट सिद्धांत",mr:"गेस्टाल्ट तत्त्वे",ta:"கெஸ்டால்ட் கோட்பாடுகள்",te:"గెస్టాల్ట్ సూత్రాలు",kn:"ಗೆಸ್ಟಾಲ್ಟ್ ತತ್ವಗಳು",ml:"ഗെസ്റ്റാൾട്ട് തത്വങ്ങൾ"},content:{en:"Proximity, Similarity, Continuation, Closure, Figure-Ground, Symmetry — how the brain organizes visual information into patterns.",hi:"निकटता, समानता, निरंतरता, बंदी, आकृति-भूमि, समरूपता।",mr:"निकटता, समानता, सातत्य, बंदी, आकृती-भूमी, सममिती.",ta:"அருகிருத்தல், ஒற்றுமை, தொடர்ச்சி, மூடல், முன்னணி-பின்னணி.",te:"ప్రాక్సిమిటీ, సిమిలారిటీ, కంటిన్యుయేషన్, క్లోజర్, ఫిగర్-గ్రౌండ్.",kn:"ಸಾಮೀಪ್ಯ, ಸಾದೃಶ್ಯ, ಮುಂದುವರಿಕೆ, ಮುಚ್ಚಿವೆ, ಆಕೃತಿ-ನೆಲ.",ml:"പ്രോക്സിമിറ്റി, സിമിലാരിറ്റി, കണ്ടിന്യുവേഷൻ, ക്ലോഷർ."}}
+];
+
+const QUIZ = [
+  {q:"A cube painted on all faces is cut into 27 smaller cubes. How many have exactly 2 painted faces?",opts:["8","12","6","4"],ans:1,exp:"Edge cubes (not corners) have 2 painted faces. A 3×3×3 cube has 12 edge positions."},
+  {q:"Which color is opposite to Red on the standard color wheel?",opts:["Blue","Green","Cyan","Yellow"],ans:1,exp:"Green is complementary to Red on the RYB color wheel used in art and design."},
+  {q:"Bauhaus school was founded in which year?",opts:["1905","1919","1925","1933"],ans:1,exp:"Bauhaus was founded by Walter Gropius in Weimar, Germany in 1919."},
+  {q:"A logo is 5cm wide at 1:1 scale. What is its width at 300%?",opts:["10cm","15cm","20cm","25cm"],ans:1,exp:"300% of 5cm = 5 × 3 = 15cm."},
+  {q:"Which is NOT a primary color in the RGB (light) color model?",opts:["Red","Green","Blue","Yellow"],ans:3,exp:"In the RGB model for screens, primaries are Red, Green, Blue. Yellow is secondary."},
+  {q:"Which design principle ensures no single element overpowers another?",opts:["Contrast","Balance","Rhythm","Emphasis"],ans:1,exp:"Balance ensures visual equilibrium — no part feels heavier than others."},
+  {q:"An image is 800×600 pixels. What is its aspect ratio?",opts:["3:2","4:3","16:9","5:4"],ans:1,exp:"800÷200=4 and 600÷200=3, giving aspect ratio 4:3."},
+  {q:"Which Indian textile is Varanasi famous for?",opts:["Chanderi","Banarasi Silk","Kanjivaram","Pashmina"],ans:1,exp:"Banarasi Silk with gold/silver brocade originates from Varanasi, Uttar Pradesh."},
+  {q:"What does 'kerning' mean in typography?",opts:["Line spacing","Letter size","Space between letters","Font weight"],ans:2,exp:"Kerning refers to the adjustment of space between individual letter pairs in typography."},
+  {q:"Which movement is known for 'form follows function'?",opts:["Art Nouveau","Bauhaus","Art Deco","Rococo"],ans:1,exp:"Bauhaus popularized 'form follows function' — design should serve its purpose efficiently."}
+];
+
+// State
+let lang = "en";
+let exam = "NID";
+let activeTab = "home";
+let quizIdx = 0, quizScore = 0, quizSelected = null, quizDone = false;
+let chatHistory = [];
+let isLoading = false;
+
+function t(key){ return UI[lang][key]; }
+function ex(){ return EXAMS[exam]; }
+
+function setCSS(){
+  const e = ex();
+  document.documentElement.style.setProperty('--c', e.color);
+  document.documentElement.style.setProperty('--a', e.accent);
+  document.body.style.fontFamily = LANGS[lang].font;
+  document.getElementById('glow1').style.background = `radial-gradient(circle,${e.color}18 0%,transparent 70%)`;
+  document.getElementById('glow2').style.background = `radial-gradient(circle,${e.accent}0D 0%,transparent 70%)`;
+  document.getElementById('logoIcon').style.background = e.color;
+  document.getElementById('logoTitle').style.color = e.color;
+  document.getElementById('langBtn').style.borderColor = e.color+'80';
+  document.getElementById('langBtn').style.color = e.accent;
+}
+
+function buildLangMenu(){
+  const menu = document.getElementById('langMenu');
+  menu.innerHTML = Object.entries(LANGS).map(([code,info])=>
+    `<button class="lang-item ${code===lang?'active':''}" onclick="setLang('${code}')" style="font-family:${info.font}">${info.label}</button>`
+  ).join('');
+}
+
+function toggleLang(){
+  const m = document.getElementById('langMenu');
+  m.classList.toggle('open');
+}
+
+function setLang(code){
+  lang = code;
+  document.getElementById('langMenu').classList.remove('open');
+  document.getElementById('langLabel').textContent = LANGS[code].label;
+  document.body.style.fontFamily = LANGS[code].font;
+  buildLangMenu();
+  renderAll();
+  // Reset chat greeting
+  chatHistory = [{role:'ai',text:getLangGreeting()}];
+  renderChat();
+}
+
+function getLangGreeting(){
+  const greet = {en:"Hi! I'm your Design Entrance AI Tutor 🎨 (Free — Google Gemini). Ask me anything about NID, NIFT, UCEED or CEED!",hi:"नमस्ते! मैं आपका AI ट्यूटर हूँ 🎨 NID, NIFT, UCEED या CEED के बारे में पूछें!",mr:"नमस्कार! मी तुमचा AI शिक्षक आहे 🎨 कुठलाही प्रश्न विचारा!",ta:"வணக்கம்! நான் உங்கள் AI ஆசிரியர் 🎨 எதையும் கேளுங்கள்!",te:"నమస్కారం! నేను మీ AI గురువు 🎨 ఏదైనా అడగండి!",kn:"ನಮಸ್ಕಾರ! ನಾನು ನಿಮ್ಮ AI ಶಿಕ್ಷಕ 🎨 ಏನನ್ನಾದರೂ ಕೇಳಿ!",ml:"നമസ്കാരം! ഞാൻ നിങ്ങളുടെ AI ട്യൂട്ടർ 🎨 എന്തും ചോദിക്കൂ!"};
+  return greet[lang];
+}
+
+function buildExamTabs(){
+  document.getElementById('examTabs').innerHTML = Object.keys(EXAMS).map(k=>
+    `<button class="exam-btn ${k===exam?'active':''}" onclick="setExam('${k}')" style="${k===exam?`background:${EXAMS[k].color};border-color:${EXAMS[k].color};color:#fff`:`border-color:#222`}">${k}</button>`
+  ).join('');
+  document.getElementById('examDesc').textContent = ex().desc[lang];
+}
+
+function setExam(e){
+  exam = e;
+  setCSS();
+  buildExamTabs();
+  renderSyllabus();
+  renderNav();
+}
+
+function buildNav(){
+  document.getElementById('mainNav').innerHTML = t('tabs').map((label,i)=>{
+    const ids = ['home','design','gat','chat'];
+    return `<button class="nav-btn ${activeTab===ids[i]?'active':''}" onclick="switchTab('${ids[i]}')">${label}</button>`;
+  }).join('');
+}
+
+function switchTab(id){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  activeTab = id;
+  buildNav();
+}
+
+function renderNav(){
+  buildNav();
+}
+
+function renderSyllabus(){
+  document.getElementById('syllabusHead').textContent = t('syllabusHead')+' — '+exam;
+  const tags = document.getElementById('topicTags');
+  tags.innerHTML = ex().topics.map(tp=>`<span class="tag">${tp}</span>`).join('');
+  const cards = document.getElementById('syllabusCards');
+  cards.innerHTML = ex().syllabus.map((item,i)=>`
+    <div class="syllabus-card" onclick="toggleCard(${i})">
+      <div class="card-header">
+        <span class="card-num" style="background:${ex().color}">${i+1}</span>
+        <span class="card-title" style="font-family:${LANGS[lang].font}">${item.title[lang]}</span>
+        <span class="card-arrow" id="arrow-${i}">▼</span>
+      </div>
+      <div class="card-content" id="content-${i}" style="font-family:${LANGS[lang].font}">${item.content[lang]}</div>
+    </div>
+  `).join('');
+}
+
+function toggleCard(i){
+  const c = document.getElementById('content-'+i);
+  const a = document.getElementById('arrow-'+i);
+  c.classList.toggle('open');
+  a.classList.toggle('open');
+}
+
+function renderTheory(){
+  document.getElementById('designHead').textContent = t('designHead');
+  document.getElementById('theoryCards').innerHTML = THEORY.map(item=>`
+    <div class="theory-card">
+      <div class="theory-bg">${item.icon}</div>
+      <div class="theory-icon">${item.icon}</div>
+      <div class="theory-title" style="font-family:${LANGS[lang].font}">${item.title[lang]}</div>
+      <div class="theory-content" style="font-family:${LANGS[lang].font}">${item.content[lang]}</div>
+    </div>
+  `).join('');
+}
+
+function renderGAT(){
+  document.getElementById('gatHead').textContent = t('gatHead');
+  const el = document.getElementById('gatContent');
+  if(quizDone){
+    el.innerHTML = `
+      <div class="done-box">
+        <div class="done-emoji">🎉</div>
+        <div class="done-title" style="font-family:${LANGS[lang].font}">${t('done')}</div>
+        <div class="done-score" style="color:${ex().accent}">${t('score')}: ${quizScore}/${QUIZ.length}</div>
+        <div class="done-msg" style="font-family:${LANGS[lang].font}">${quizScore>=7?t('excellent'):quizScore>=5?t('good'):t('keep')}</div>
+        <button class="retry-btn" style="background:${ex().color};font-family:${LANGS[lang].font}" onclick="resetQuiz()">${t('tryAgain')}</button>
+      </div>`;
+    return;
+  }
+  const q = QUIZ[quizIdx];
+  el.innerHTML = `
+    <div class="quiz-meta">
+      <span style="color:#444">Q ${quizIdx+1}/${QUIZ.length}</span>
+      <span style="color:${ex().accent}">${t('score')}: ${quizScore}</span>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar" style="width:${(quizIdx/QUIZ.length)*100}%;background:${ex().color}"></div></div>
+    <div class="quiz-card">
+      <div class="quiz-q-text">${q.q}</div>
+      ${q.opts.map((opt,i)=>`
+        <button class="quiz-opt ${quizSelected!==null?(i===q.ans?'correct':(i===quizSelected&&i!==q.ans?'wrong':'')):''}"
+          onclick="selectOpt(${i})" ${quizSelected!==null?'disabled':''}>
+          <span style="color:#333;margin-right:7px;font-size:10px">${String.fromCharCode(65+i)}.</span>${opt}
+        </button>
+      `).join('')}
+      ${quizSelected!==null?`
+        <div class="quiz-explain"><strong style="color:${ex().accent}">${t('expl')}:</strong> ${q.exp}</div>
+        <button class="next-btn" style="background:${ex().color};font-family:${LANGS[lang].font}" onclick="nextQ()">
+          ${quizIdx+1<QUIZ.length?t('next'):t('results')}
+        </button>
+      `:''}
+    </div>`;
+}
+
+function selectOpt(i){
+  if(quizSelected!==null) return;
+  quizSelected = i;
+  if(i===QUIZ[quizIdx].ans) quizScore++;
+  renderGAT();
+}
+
+function nextQ(){
+  quizIdx++;
+  quizSelected = null;
+  if(quizIdx>=QUIZ.length) quizDone = true;
+  renderGAT();
+}
+
+function resetQuiz(){
+  quizIdx=0; quizScore=0; quizSelected=null; quizDone=false;
+  renderGAT();
+}
+
+function renderChatUI(){
+  document.getElementById('chatHead').textContent = t('chatHead');
+  document.getElementById('chatInput').placeholder = t('placeholder');
+  const qp = document.getElementById('quickPrompts');
+  qp.innerHTML = t('prompts').map(p=>`<button class="qp-btn" onclick="setPrompt('${p}')">${p}</button>`).join('');
+}
+
+function setPrompt(p){
+  document.getElementById('chatInput').value = p;
+  document.getElementById('chatInput').focus();
+}
+
+function renderChat(){
+  const box = document.getElementById('chatBox');
+  box.innerHTML = chatHistory.map(m=>`
+    <div class="msg ${m.role}">
+      <div class="msg-bubble" style="font-family:${LANGS[lang].font}">${m.text}</div>
+    </div>
+  `).join('');
+  if(isLoading){
+    box.innerHTML += `<div class="msg ai"><div class="msg-bubble typing">${t('thinking')}<span class="blink">...</span></div></div>`;
+  }
+  box.scrollTop = box.scrollHeight;
+}
+
+async function sendMessage(){
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if(!msg || isLoading) return;
+  input.value = '';
+  chatHistory.push({role:'user',text:msg});
+  isLoading = true;
+  renderChat();
+  try{
+    const res = await fetch(GEMINI_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        contents:[{parts:[{text:`You are an expert tutor for Indian design entrance exams (NID, NIFT, UCEED, CEED). Current exam: ${exam}. Always respond in ${LANGS[lang].label}. Be helpful and concise.\n\nUser: ${msg}`}]}],
+        generationConfig:{maxOutputTokens:600,temperature:0.7}
+      })
+    });
+    const data = await res.json();
+    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, couldn't get response. Please check your API key.";
+    chatHistory.push({role:'ai',text:reply});
+  }catch(e){
+    chatHistory.push({role:'ai',text:"Error connecting. Please check your API key and internet connection."});
+  }
+  isLoading = false;
+  renderChat();
+}
+
+document.getElementById('chatInput').addEventListener('keydown',e=>{
+  if(e.key==='Enter') sendMessage();
+});
+
+function renderAll(){
+  setCSS();
+  buildLangMenu();
+  buildExamTabs();
+  buildNav();
+  renderSyllabus();
+  renderTheory();
+  renderGAT();
+  renderChatUI();
+  renderChat();
+}
+
+// Init
+chatHistory = [{role:'ai',text:getLangGreeting()}];
+renderAll();
+</script>
+</body>
+</html>
