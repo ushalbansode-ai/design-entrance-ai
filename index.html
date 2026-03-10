@@ -447,61 +447,38 @@ async function sendMessage(){
   const msg = input.value.trim();
   if(!msg || isLoading) return;
   input.value = '';
-  chatHistory.push({role:'user',text:msg});
+  chatHistory.push({role:'user', text:msg});
   isLoading = true;
   renderChat();
-  try{
-    const prompt = `You are an expert tutor for Indian design entrance exams (NID, NIFT, UCEED, CEED). Current exam: ${exam}. Always respond in ${LANGS[lang].label}. Be helpful and concise.\n\nUser: ${msg}`;
-    const res = await fetch(GEMINI_URL,{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json'
-      },
-      body:JSON.stringify({
-        contents:[{parts:[{text:prompt}]}],
-        generationConfig:{maxOutputTokens:600,temperature:0.7}
-      })
-    });
-    if(!res.ok){
-      const err = await res.json();
-      const errMsg = err?.error?.message || 'Unknown error';
-      if(errMsg.includes('API_KEY')||errMsg.includes('key')){
-        chatHistory.push({role:'ai',text:"❌ API key error. Please check your Gemini key is correct in the code."});
-      } else {
-        chatHistory.push({role:'ai',text:`❌ Error: ${errMsg}`});
-      }
-    } else {
-      const data = await res.json();
-      const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, no response received.";
-      chatHistory.push({role:'ai',text:reply});
-    }
-  }catch(e){
-    // Try alternate model if first fails
-    try{
-      const prompt = `You are an expert tutor for Indian design entrance exams (NID, NIFT, UCEED, CEED). Current exam: ${exam}. Always respond in ${LANGS[lang].label}. Be helpful and concise.\n\nUser: ${msg}`;
-      const altUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
-      const res2 = await fetch(altUrl,{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({
-          contents:[{parts:[{text:prompt}]}],
-          generationConfig:{maxOutputTokens:600,temperature:0.7}
-        })
-      });
-      const data2 = await res2.json();
-      const reply2 = data2.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, couldn't get response.";
-      chatHistory.push({role:'ai',text:reply2});
-    }catch(e2){
-      chatHistory.push({role:'ai',text:"❌ Network error. Make sure you are on a good internet connection and your API key is valid."});
-    }
-  }
-  isLoading = false;
-  renderChat();
-}
 
-document.getElementById('chatInput').addEventListener('keydown',e=>{
-  if(e.key==='Enter') sendMessage();
-});
+  const prompt = `You are an expert tutor for Indian design entrance exams (NID, NIFT, UCEED, CEED). Current exam: ${exam}. Respond in ${LANGS[lang].label}. Be concise.\n\nUser: ${msg}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+  const body = JSON.stringify({
+    contents:[{parts:[{text:prompt}]}],
+    generationConfig:{maxOutputTokens:500,temperature:0.7}
+  });
+
+  const xhr = new XMLHttpRequest();
+  xhr.open('POST', url, true);
+  xhr.setRequestHeader('Content-Type','application/json');
+  xhr.onload = function(){
+    const data = JSON.parse(xhr.responseText);
+    if(data.error){
+      chatHistory.push({role:'ai', text:'❌ '+data.error.code+': '+data.error.message});
+    } else {
+      const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No response';
+      chatHistory.push({role:'ai', text:reply});
+    }
+    isLoading = false;
+    renderChat();
+  };
+  xhr.onerror = function(){
+    chatHistory.push({role:'ai', text:'❌ Network error: '+xhr.status+' '+xhr.statusText});
+    isLoading = false;
+    renderChat();
+  };
+  xhr.send(body);
+ }
 
 function renderAll(){
   setCSS();
